@@ -1,0 +1,44 @@
+<H4>Post</H4>
+
+<div class="container">
+  <!-- <div class="alert alert-warning" *ngIf="userForm.dirty && title.invalid">Title is required and should be between 2 to 30 characters</div> -->
+  <div class="alert alert-warning" *ngIf="(name.dirty && name.touched) && name.invalid">User Name is required and should be between 1 to 100 characters</div>
+  <div class="alert alert-warning" *ngIf="(password.dirty && password.touched) && password.invalid">Password is required</div>
+  <div class="alert alert-warning" *ngIf="(email.dirty && email.touched) && email.invalid">Please enter a valid email</div>
+  <div class="alert alert-warning" *ngIf="(spaceName.dirty && spaceName.touched) && spaceName.invalid">SpaceName is required and should be between 2 to 30 characters</div>
+  
+  <form (ngSubmit)="!userForm.invalid && registerUser()" #userForm="ngForm">
+    <fieldset class="form-group">
+      <label>Username</label>
+      <input type="text" #name="ngModel" 
+            [(ngModel)]="user.name" class="form-control" 
+                name="name" required="required" minlength="2" maxlength="30">
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label>Password</label>
+      <input type="password" #password="ngModel" 
+            [(ngModel)]="user.password" class="form-control" 
+                name="name" required="required" minlength="1">
+    </fieldset>
+
+    <!-- https://angular.io/api/forms/EmailValidator -->
+    <fieldset class="form-group">
+      <label>Email</label>
+      <input type="email" #email="ngModel" 
+            [(ngModel)]="user.email" class="form-control" 
+                name="email" required="required" email="true">
+    </fieldset>
+
+    <fieldset class="form-group">
+        <label>SpaceName</label>
+        <input type="text" #spaceName="ngModel" 
+              [(ngModel)]="user.spaceName" class="form-control" 
+                  name="spaceName" required="required" minlength="2" maxlength="30">
+    </fieldset>  
+
+    <p>Upon Successful registration, you will be taken to login page.</p>
+    <button type="submit" [disabled]="userForm.invalid" class="btn btn-success">Save</button>
+    
+  </form>  
+</div>

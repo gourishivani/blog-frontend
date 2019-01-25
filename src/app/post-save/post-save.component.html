@@ -1,0 +1,26 @@
+<H4>Post</H4>
+
+<div class="container">
+  <!-- <div class="alert alert-warning" *ngIf="postForm.dirty && title.invalid">Title is required and should be between 2 to 30 characters</div> -->
+  <div class="alert alert-warning" *ngIf="(title.dirty && title.touched) && title.invalid">Title is required and should be between 2 to 30 characters</div>
+  <div class="alert alert-warning" *ngIf="(description.dirty && description.touched) && description.invalid">Description is required and should be between 2 to 300 characters</div>
+  
+  <form (ngSubmit)="!postForm.invalid && savePost()" #postForm="ngForm">
+    <fieldset class="form-group">
+      <label>Title</label>
+      <input type="text" #title="ngModel" 
+            [(ngModel)]="post.title" class="form-control" 
+                name="title" required="required" minlength="2" maxlength="30">
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label>Description</label>
+      <textarea placeholder="Blog away..." #description="ngModel" 
+            [(ngModel)]="post.description" class="form-control" 
+                name="description" required="required" minlength="2" maxlength="300"
+                 rows="3"></textarea>
+    </fieldset>
+
+    <button type="submit" [disabled]="postForm.invalid" class="btn btn-success">Save</button>
+  </form>  
+</div>

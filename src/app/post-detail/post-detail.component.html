@@ -1,0 +1,39 @@
+<div class="container">
+    <h4 class="display-10">{{post.title}}</h4>
+    <p class="lead">{{post.description}}</p>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Comments
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning" *ngIf="(comment.dirty && comment.touched) && comment.invalid">Comment Text should be between 2 to 300 characters</div>
+  
+        <form (ngSubmit)="!postForm.invalid && saveComment()" #postForm="ngForm">
+            <div class="form-group">
+                <!-- <label for="commentContent">Comment</label> -->
+                <textarea  #comment="ngModel" [(ngModel)]="userComment.content" [disabled]="!simpleAuthenticationService.isUserLoggedIn()"
+                 class="form-control"
+                 name="userComment" required="required"
+                 minlength="2" maxlength="300" 
+                 placeholder="Write a comment..." rows="3"></textarea>
+            </div>
+            
+            <button *ngIf="simpleAuthenticationService.isUserLoggedIn()" [disabled]="postForm.invalid" type="submit" class="btn btn-primary">Add Comment</button>
+            <p *ngIf="!simpleAuthenticationService.isUserLoggedIn()">Log In If you want to comment</p>
+          </form>
+    </div>
+</div>
+
+<div class="card">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" *ngFor="let comment of comments">                   
+            <div class="card-body">
+                <h5 class="card-title">By {{comment.commentorName}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{comment.created | date}}</h6>
+                <p class="card-text">{{comment.content}}</p>
+            </div>
+        </li>
+    </ul>
+</div>
