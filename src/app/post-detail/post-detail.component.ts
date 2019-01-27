@@ -9,6 +9,7 @@ import { UserDataService } from '../service/data/user.service';
 import { CommentService, EmbeddedCommentData } from '../service/data/comment.service';
 import { CommentCreate } from '../models/comment-create';
 import { User } from '../user-list/user-list.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-post-detail',
@@ -99,7 +100,7 @@ export class PostDetailComponent implements OnInit {
   // }
 
 
-  saveComment() {
+  saveComment(createCommentForm: NgForm) {
     console.log("Saving comment ", this.userComment)
     this.assignForeignKeysToComment()
     this.commentService.executeCreateComment(this.userComment)
@@ -112,6 +113,7 @@ export class PostDetailComponent implements OnInit {
 
               // NOTE: Angular by default disables sameUrlNavigation. So instead of navigating, We can just reload the comments instead of doing premature optimization.
               // this.router.navigate([`/users/${this.userId}/posts/${this.postId}`])
+              createCommentForm.reset()
               this.loadComments()
             },
             response => {
@@ -124,6 +126,8 @@ export class PostDetailComponent implements OnInit {
           )
     
   }
+
+  
 
   assignForeignKeysToComment() {
     let post = new Post();

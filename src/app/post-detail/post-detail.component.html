@@ -10,7 +10,7 @@
     <div class="card-body">
         <div class="alert alert-warning" *ngIf="(comment.dirty && comment.touched) && comment.invalid">Comment Text should be between 2 to 300 characters</div>
   
-        <form (ngSubmit)="!postForm.invalid && saveComment()" #postForm="ngForm">
+        <form (ngSubmit)="!postForm.invalid && saveComment(postForm); postForm.reset()" #postForm="ngForm">
             <div class="form-group">
                 <!-- <label for="commentContent">Comment</label> -->
                 <textarea  #comment="ngModel" [(ngModel)]="userComment.content" [disabled]="!simpleAuthenticationService.isUserLoggedIn()"
