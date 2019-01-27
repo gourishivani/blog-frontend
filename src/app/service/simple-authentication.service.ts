@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../user-list/user-list.component';
+import { User } from '../user/user-list/user-list.component';
 
 @Injectable({
   providedIn: 'root'

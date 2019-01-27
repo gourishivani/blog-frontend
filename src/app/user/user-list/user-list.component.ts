@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserDataService as UserDataService } from '../service/data/user.service';
-import { AlertService } from '../service/alert.service';
-import { UserDetail as UserDetail } from './user-detail-dto';
+import { UserDataService as UserDataService } from '../../service/data/user.service';
+import { AlertService } from '../../service/alert.service';
+import { UserDetail as UserDetail } from '../../models/user-detail-dto';
 
 export class User {
   public id:number;

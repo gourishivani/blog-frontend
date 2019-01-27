@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../user-list/user-list.component';
 import { Router } from '@angular/router';
-import { UserDataService } from '../service/data/user.service';
-import { UserCreate } from '../models/user-create';
+import { UserDataService } from '../../service/data/user.service';
+import { UserCreate } from '../../models/user-create';
 
 @Component({
   selector: 'app-register-user',

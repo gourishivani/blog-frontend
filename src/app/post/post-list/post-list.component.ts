@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Post } from './post';
-import { User } from '../user-list/user-list.component';
-import { SimpleAuthenticationService } from '../service/simple-authentication.service';
-import { PostService, PostsEmbeddedData } from '../service/data/post.service';
-import { AlertService } from '../service/alert.service';
+import { Post } from '../../models/post';
+import { User } from '../../user/user-list/user-list.component';
+import { SimpleAuthenticationService } from '../../service/simple-authentication.service';
+import { PostService, PostsEmbeddedData } from '../../service/data/post.service';
+import { AlertService } from '../../service/alert.service';
 
 export interface EmbeddedServerData {
   _embedded:Embedded

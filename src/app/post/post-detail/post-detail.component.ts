@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../post-list/post';
+import { Post } from '../../models/post';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Comment } from './comment';
-import { SimpleAuthenticationService } from '../service/simple-authentication.service';
-import { PostService } from '../service/data/post.service';
-import { AlertService } from '../service/alert.service';
-import { UserDataService } from '../service/data/user.service';
-import { CommentService, EmbeddedCommentData } from '../service/data/comment.service';
-import { CommentCreate } from '../models/comment-create';
-import { User } from '../user-list/user-list.component';
+import { Comment } from '../../models/comment';
+import { SimpleAuthenticationService } from '../../service/simple-authentication.service';
+import { PostService } from '../../service/data/post.service';
+import { AlertService } from '../../service/alert.service';
+import { UserDataService } from '../../service/data/user.service';
+import { CommentService, EmbeddedCommentData } from '../../service/data/comment.service';
+import { CommentCreate } from '../../models/comment-create';
+import { User } from '../../user/user-list/user-list.component';
 import { NgForm } from '@angular/forms';
 
 @Component({

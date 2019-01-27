@@ -12,11 +12,11 @@ import { FooterComponent } from './footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ErrorComponent } from './error/error.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { PostListComponent } from './post-list/post-list.component';
-import { PostDetailComponent } from './post-detail/post-detail.component';
-import { PostSaveComponent } from './post-save/post-save.component';
-import { RegisterUserComponent } from './register-user/register-user.component';
+import { UserListComponent } from './user/user-list/user-list.component';
+import { PostListComponent } from './post/post-list/post-list.component';
+import { PostDetailComponent } from './post/post-detail/post-detail.component';
+import { PostSaveComponent } from './post/post-save/post-save.component';
+import { RegisterUserComponent } from './user/register-user/register-user.component';
 import { AlertComponent } from './alert/alert.component';
 import { ApiEndPoint } from './models/ApiEndPoint';
 

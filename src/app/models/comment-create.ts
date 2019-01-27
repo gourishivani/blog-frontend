@@ -1,5 +1,5 @@
-import { User } from '../user-list/user-list.component';
-import { Post } from '../post-list/post';
+import { User } from '../user/user-list/user-list.component';
+import { Post } from './post';
 
 export class CommentCreate {
     content: string;

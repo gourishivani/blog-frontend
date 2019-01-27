@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../post-list/post';
+import { Post } from '../../models/post';
 import { Router } from '@angular/router';
-import { PostService } from '../service/data/post.service';
-import { PostCreate } from '../models/post-create';
-import { SimpleAuthenticationService } from '../service/simple-authentication.service';
+import { PostService } from '../../service/data/post.service';
+import { PostCreate } from '../../models/post-create';
+import { SimpleAuthenticationService } from '../../service/simple-authentication.service';
 
 @Component({
   selector: 'app-post-save',
