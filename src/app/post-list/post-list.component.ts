@@ -3,6 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from './post';
 import { User } from '../user-list/user-list.component';
 import { SimpleAuthenticationService } from '../service/simple-authentication.service';
+import { PostService, PostsEmbeddedData } from '../service/data/post.service';
+import { AlertService } from '../service/alert.service';
+
+export interface EmbeddedServerData {
+  _embedded:Embedded
+}
+export interface Embedded {
+  data:Post[]
+}
+
 
 @Component({
   selector: 'app-post-list',
@@ -12,23 +22,21 @@ import { SimpleAuthenticationService } from '../service/simple-authentication.se
 export class PostListComponent implements OnInit {
 
   userId = null
-  user = null;
+  user = null
   posts: Post[]
+  loading = false
+  errorMessageFromService = ""
 
   constructor(
     private activatedRoute: ActivatedRoute, private route: Router,
-    private simpleAuthenticationService: SimpleAuthenticationService) {
+    private simpleAuthenticationService: SimpleAuthenticationService,
+    private postDataService: PostService, private alertService: AlertService) {
   }
 
   ngOnInit() {
     this.userId = this.activatedRoute.snapshot.params['id'];
     this.user = this.getUser()
-    this.posts = [
-      this.getPost(1),
-      this.getPost(2),
-      this.getPost(3),
-      this.getPost(4),
-    ]
+    this.loadPostsForUser()
   }
 
   getUser() {
@@ -50,15 +58,35 @@ export class PostListComponent implements OnInit {
     console.log(`this.user.id=${this.user.id}`)
     this.route.navigate(['/users', this.user.id, 'posts', 'save'])
   }
-  
-  getPost(postId:number) {
-    let post = new Post()
-    post.id = postId
-    post.title = `Fun Post ${postId}`
-    post.description = `The result of this pipe is not reevaluated when the input is mutated. To avoid the need to reformat the date on every change-detection cycle, treat the date as an immutable object and change the reference when the pipe needs to run again. ${postId}`
-    post.created = new Date()
-    post.lastModified = new Date()
 
-    return post;
+  loadPostsForUser() {
+    this.postDataService.executeGetPostsForUser(this.userId).subscribe(
+      response => this.handleSuccessfulResponse(response),
+      error => this.handleErrorResponse(error)
+    )
+  }
+
+  handleErrorResponse(response: any): void {
+    this.loading = false
+    console.log(response)
+    console.log(response.message)
+    console.log(response.error.message)
+    this.errorMessageFromService = response.error.message
+    // this.alertService.error = error;
+  }
+
+  handleSuccessfulResponse(response: PostsEmbeddedData): void {
+    this.loading = false
+    console.log('Success ', response)
+    if (!response._embedded) {
+      this.posts = []  
+    } else
+      this.posts = response._embedded.data
+    console.log('POSTS ', this.posts)
+  }
+
+  hasPosts() {
+    // console.log('has posts ', this.posts && this.posts.length > 0)
+    return this.posts && this.posts.length > 0
   }
 }

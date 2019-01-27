@@ -9,12 +9,13 @@ import { PostListComponent } from './post-list/post-list.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostSaveComponent } from './post-save/post-save.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
+import { UnauthenticatedUserRouteGuardService } from './service/unauthenticated-user-route-guard.service';
 
 const routes: Routes = [
   // Allow anonymous users to access the following routes
   { path: '', component: LoginComponent},
-  { path: 'register', component: RegisterUserComponent},
-  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterUserComponent, canActivate:[UnauthenticatedUserRouteGuardService]},
+  { path: 'login', component: LoginComponent, canActivate:[UnauthenticatedUserRouteGuardService]},
   { path: 'home', redirectTo: '/users'},
   { path: 'users', component: UserListComponent},
   { path: 'users/:id/posts', component: PostListComponent},

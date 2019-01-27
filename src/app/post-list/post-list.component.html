@@ -8,7 +8,8 @@
       <button *ngIf="simpleAuthenticationService.isUserLoggedIn()" (click)="navigateToPostSave()" class="btn btn-success">Add</button>
   </div> -->
 <!-- <a [routerLink]="[ '/', 'users', user.id, 'posts', post.id, 'save' ]">here</a> -->
-  <table class="table">
+  <table *ngIf="hasPosts()" class="table">
+  <!-- <table *ngIf="posts !== undefined && posts.length != 0" class="table"> -->
     <thead>
       <tr>
         <th>Post Id</th>
@@ -43,6 +44,10 @@
     </tbody>
 
   </table>
+
+  <span [hidden]="!loading">Loading...</span>
+
+  <p *ngIf="!loading && !hasPosts()">This user has no posts</p>
 
   <!-- <div class="row">
     <button (click)="addTodo()" class="btn btn-success">Add</button>

@@ -18,6 +18,7 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { PostSaveComponent } from './post-save/post-save.component';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { AlertComponent } from './alert/alert.component';
+import { ApiEndPoint } from './models/ApiEndPoint';
 
 @NgModule({
   // Components, pipes and directives are declared here
@@ -42,7 +43,7 @@ import { AlertComponent } from './alert/alert.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ApiEndPoint],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

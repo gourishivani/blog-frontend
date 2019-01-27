@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserDataService as UserDataService } from '../service/data/user.service';
+import { AlertService } from '../service/alert.service';
+import { UserDetail as UserDetail } from './user-detail-dto';
 
 export class User {
   public id:number;
@@ -10,6 +13,13 @@ export class User {
   constructor() { }
 }
 
+export interface EmbeddedServerData {
+  _embedded:Embedded
+}
+export interface Embedded {
+  data:UserDetail[]
+}
+
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
@@ -17,32 +27,46 @@ export class User {
 })
 export class UserListComponent implements OnInit {
 
-  users: User []
-
+  users: UserDetail []
+  errorMessageFromService = ""
   // users = []
+  loading = true
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userDataService: UserDataService, private alertService: AlertService) { }
 
   ngOnInit() {
-    this.users = [
-      this.newUser(1, "foo", "myworld", new Date()),
-      this.newUser(2, "bar", "bar myworld", new Date()),
-      this.newUser(3, "bez", "bez myworld", new Date()),
-      this.newUser(4, "baxter", "baxter myworld", new Date()),
-      this.newUser(5, "ticker", "ticker myworld", new Date()),
-      this.newUser(6, "symbol", "symbol myworld", new Date())
-    ]
+    this.loadAllUsers()
   }
 
-  newUser(id:number, name:string, spaceName:string,
-    created: Date) {
-    let userLocal = new User()
-    userLocal.name = name
-    userLocal.spaceName = spaceName
-    userLocal.created = created
-    userLocal.id = id
-    return userLocal
+  loadAllUsers() {
+    this.userDataService.executeGetAllUsers().subscribe(
+      response => this.handleSuccessfulResponse(response),
+      error => this.handleErrorResponse(error)
+    )
   }
+
+  handleErrorResponse(response: any): void {
+    this.loading = false
+    console.log(response)
+    console.log(response.message)
+    console.log(response.error.message)
+    this.errorMessageFromService = response.error.message
+    // this.alertService.error = error;
+  }
+
+  handleSuccessfulResponse(response: EmbeddedServerData): void {
+    this.loading = false
+    console.log('Success ', response)
+    // response.map(res => res)
+    if (!response._embedded) {
+      this.users = []  
+    } else
+      this.users = response._embedded.data
+
+    
+    console.log('USERS ', this.users)
+  }
+
   getPosts(userid:number) {
     this.router.navigate(['users', userid, 'posts'])
   }

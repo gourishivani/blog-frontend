@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from '../user-list/user-list.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,11 @@ export class SimpleAuthenticationService {
     return false;
   }
 
+  getLoggedInUser() {
+    let user = new User()
+    user.id = 1
+    return user;
+  }
   isUserLoggedIn() {
     let user = sessionStorage.getItem('authenticaterUser')
     return !(user === null)

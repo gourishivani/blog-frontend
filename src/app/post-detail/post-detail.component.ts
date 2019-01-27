@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from '../post-list/post';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from './comment';
 import { SimpleAuthenticationService } from '../service/simple-authentication.service';
+import { PostService } from '../service/data/post.service';
+import { AlertService } from '../service/alert.service';
+import { UserDataService } from '../service/data/user.service';
+import { CommentService, EmbeddedCommentData } from '../service/data/comment.service';
+import { CommentCreate } from '../models/comment-create';
+import { User } from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-post-detail',
@@ -12,52 +18,118 @@ import { SimpleAuthenticationService } from '../service/simple-authentication.se
 export class PostDetailComponent implements OnInit {
   post = new Post()
   postId = null
+  userId = null
   comments: Comment[]
-  userComment = new Comment()
+  userComment = new CommentCreate()
+  loading = false
+  errorMessageFromService = ""
+  error = ''
 
   constructor(private activatedRoute:ActivatedRoute,
-    private simpleAuthenticationService: SimpleAuthenticationService) { 
+    private simpleAuthenticationService: SimpleAuthenticationService,
+    private postDataService: PostService, private commentService: CommentService, 
+    private alertService: AlertService,
+    private router: Router) { 
     this.postId = this.activatedRoute.snapshot.params['postId'];
+    this.userId = this.activatedRoute.snapshot.params['userId'];
   }
 
   ngOnInit() {
-    this.post = new Post()
-    this.post.id = this.postId
-    this.post.title = `Fun Post ${this.postId}`
-    this.post.description = `Short Description ${this.postId}`
-    this.post.created = new Date()
-    this.post.lastModified = new Date()
-
-    this.comments = [
-      this.comment(1, "Mix and match multiple content types to create the card you need, or throw everything in there. Shown below are image styles, blocks, text styles, and a list group—all wrapped in a fixed-width card.", "Anthony", 1, new Date()),
-      this.comment(1, "The parameter value can be any valid template expression, (see the Template expressions section of the Template Syntax page) such as a string literal or a component property. In other words, you can control the format through a binding the same way you control the birthday value through a binding.     Write a second component that binds the pipe's format parameter to the component's format property. Here's the template for that component:", "Beta", 2, new Date()),
-      this.comment(1, "threa", "sdf", 3, new Date()),
-      this.comment(1, "safsdfewr waehiriowejriolsm fjwheiuarj hwheariujwea iuawhroiwjelrnf howijeroinio jnajpo  wjeroj", "sdfs", 4, new Date()),
-      this.comment(1, "hel waioerhpo j wkajnre", "wtgh", 3, new Date()),
-      this.comment(1, "ahiojfok jknwjpoejrpk m", "atgtre", 11, new Date()),
-      this.comment(1, "jeorj kljer ", "tgf", 21, new Date()),
-      this.comment(1, "ojpwojerjoo ", "mhgr", 1, new Date()),
-    ]
+    this.loadPost()
+    this.loadComments()
   }
+
+  loadPost() {
+    this.postDataService.executeGetPost(this.postId).subscribe(
+      response => this.handleSuccessfulResponse(response),
+      error => this.handleErrorResponse(error)
+    )
+  }
+
+  handleErrorResponse(response: any): void {
+    this.loading = false
+    console.log(response)
+    console.log(response.message)
+    console.log(response.error.message)
+    this.errorMessageFromService = response.error.message
+    // this.alertService.error = error;
+  }
+
+  handleSuccessfulResponse(response: Post): void {
+    this.loading = false
+    console.log('Success ', response)
+    this.post = response
+    console.log('POST ', this.post)
+  }
+
+  loadComments() {
+    
+    this.commentService.executeGetCommentsForPost(this.postId).subscribe(
+      response => this.handleSuccessfulLoadCommentsResponse(response),
+      error => this.handleErrorLoadCommentsResponse(error)
+    )
+
+  }
+
+  handleErrorLoadCommentsResponse(response: any): void {
+    this.loading = false
+    console.log(response)
+    console.log(response.message)
+    console.log(response.error.message)
+    this.errorMessageFromService = response.error.message
+    // this.alertService.error = error;
+  }
+
+  handleSuccessfulLoadCommentsResponse(response: EmbeddedCommentData): void {
+    this.loading = false
+    console.log('Success ', response)
+    if (!response._embedded) {
+      this.comments = []  
+    } else
+      this.comments = response._embedded.data
+    console.log('COMMENTS ', this.comments)
+  }
+
+
+  // saveComment() {
+  //   console.log(`Saving comment ${this.userComment}`)
+
+  //   this.userComment = new Comment()
+  //   this.userComment.content = 'New Comment' // clear comment to accommodate new ones
+  // }
+
 
   saveComment() {
-    console.log(`Saving comment ${this.userComment}`)
+    console.log("Saving comment ", this.userComment)
+    this.assignForeignKeysToComment()
+    this.commentService.executeCreateComment(this.userComment)
+          .subscribe (
+            data => {
+              console.log('DATA', data)
+              this.userComment = new CommentCreate() // Clear existing comment
+              // [Optimization] Could try to avoid a page re-load if this new comment is added to the top of the comment array.
+              //  However, most real life comments have moderation and are not published immediately
 
-    this.userComment = new Comment()
-    this.userComment.content = 'New Comment' // clear comment to accommodate new ones
+              // NOTE: Angular by default disables sameUrlNavigation. So instead of navigating, We can just reload the comments instead of doing premature optimization.
+              // this.router.navigate([`/users/${this.userId}/posts/${this.postId}`])
+              this.loadComments()
+            },
+            response => {
+              console.log('ERROR ', response)
+              if (response.error && response.error.errorCode == 'VALIDATION_FAILED') {
+                this.error = response.error.message
+              } else
+                this.error = 'Unexpected error when registering a user.'
+            }
+          )
+    
   }
 
-  comment(id: number,
-    content: string,
-    commentorName: string,
-    commentorId: number,
-    created: Date) : Comment {
-      let comment = new Comment();
-      comment.id = id
-      comment.commentorName = commentorName
-      comment.commentorId = commentorId
-      comment.created = created
-      comment.content = content
-      return comment;
-    }
+  assignForeignKeysToComment() {
+    let post = new Post();
+    post.id = this.post.id
+    let commentor = this.simpleAuthenticationService.getLoggedInUser()
+    this.userComment.post = post;
+    this.userComment.commentor = commentor;
+  }
 }
