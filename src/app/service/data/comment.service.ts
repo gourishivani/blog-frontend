@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiEndPoint } from 'src/app/models/ApiEndPoint';
-import { Post } from 'src/app/post-list/post';
-import { Comment } from 'src/app/post-detail/comment';
 import { CommentCreate } from 'src/app/models/comment-create';
+import { Comment } from 'src/app/models/comment';
+import { ApiUtils } from 'src/app/models/api-utils';
+import { CREATE_COMMENT } from 'src/app/app.constants';
 
 export interface EmbeddedCommentData {
   _embedded:EmbeddedComment
@@ -18,7 +18,7 @@ export interface EmbeddedComment {
 })
 export class CommentService {
 
-  constructor(private httpClient: HttpClient, private apiEndPoint: ApiEndPoint) { }
+  constructor(private httpClient: HttpClient, private apiEndPoint: ApiUtils) { }
  
   executeGetCommentsForPost(postId: number) {
     console.log("PostService ", postId)
@@ -26,7 +26,7 @@ export class CommentService {
   }
 
   executeCreateComment(comment: CommentCreate): any {
-    return this.httpClient.post(ApiEndPoint.CREATE_COMMENT,comment)
+    return this.httpClient.post(CREATE_COMMENT,comment)
   }
 
 }

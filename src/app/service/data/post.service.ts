@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiEndPoint } from 'src/app/models/ApiEndPoint';
-import { Post } from 'src/app/post-list/post';
+import { Post } from 'src/app/models/post';
 import { PostCreate } from 'src/app/models/post-create';
+import { ApiUtils } from 'src/app/models/api-utils';
+import { CREATE_POST } from 'src/app/app.constants';
 
 export interface PostsEmbeddedData {
   _embedded:Embedded
@@ -16,11 +17,11 @@ export interface Embedded {
   providedIn: 'root'
 })
 export class PostService {
-  constructor(private httpClient: HttpClient, private apiEndPoint: ApiEndPoint) { }
+  constructor(private httpClient: HttpClient, private apiEndPoint: ApiUtils) { }
  
   executeCreatePost(post: PostCreate): any {
     console.log("PostService create", post)
-    return this.httpClient.post(ApiEndPoint.CREATE_POST, post)
+    return this.httpClient.post(CREATE_POST, post)
   }
 
   executeGetPostsForUser(userId: number) {

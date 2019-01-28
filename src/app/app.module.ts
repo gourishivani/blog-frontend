@@ -18,7 +18,8 @@ import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { PostSaveComponent } from './post/post-save/post-save.component';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
 import { AlertComponent } from './alert/alert.component';
-import { ApiEndPoint } from './models/ApiEndPoint';
+import { HttpInterceptorBasicAuthService } from './service/http/http-interceptor-basic-auth.service';
+import { ApiUtils } from './models/api-utils';
 
 @NgModule({
   // Components, pipes and directives are declared here
@@ -43,7 +44,9 @@ import { ApiEndPoint } from './models/ApiEndPoint';
     FormsModule,
     HttpClientModule
   ],
-  providers: [ApiEndPoint],
-  bootstrap: [AppComponent]
+  providers: [
+    ApiUtils,
+    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorBasicAuthService, multi: true}],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

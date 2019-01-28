@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { SimpleAuthenticationService } from '../service/simple-authentication.service';
 import { first } from 'rxjs/operators';
 import { AlertService } from '../service/alert.service';
+import { BasicAuthenticationService } from '../service/basic-authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
     private simpleAuthenticationService: SimpleAuthenticationService,
+    private basicAuthenticationService: BasicAuthenticationService,
     private alertService: AlertService
     // ,private basicAuthenticationService: BasicAuthenticationService
     ) { }
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
 //             });
 // }
 
-  /*
+  
   handleBasicAuthLogin() {
     // console.log(this.username);
     //if(this.username==="bloguser" && this.password === 'bloguser') {
@@ -61,7 +63,8 @@ export class LoginComponent implements OnInit {
         .subscribe(
           data => {
             console.log(data)
-            this.router.navigate(['welcome', this.username])
+            this.router.navigate(['users', this.userid, 'posts'])
+            // this.router.navigate(['users', this.username])
             this.invalidLogin = false      
           },
           error => {
@@ -71,6 +74,7 @@ export class LoginComponent implements OnInit {
         )
   }
 
+  /*
   handleJWTAuthLogin() {
     this.basicAuthenticationService.executeJWTAuthenticationService(this.username, this.password)
         .subscribe(
