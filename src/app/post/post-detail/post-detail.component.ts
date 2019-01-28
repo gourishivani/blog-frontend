@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../../models/post';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from '../../models/comment';
-import { SimpleAuthenticationService } from '../../service/simple-authentication.service';
 import { PostService } from '../../service/data/post.service';
 import { AlertService } from '../../service/alert.service';
 import { UserDataService } from '../../service/data/user.service';
@@ -10,6 +9,7 @@ import { CommentService, EmbeddedCommentData } from '../../service/data/comment.
 import { CommentCreate } from '../../models/comment-create';
 import { User } from '../../user/user-list/user-list.component';
 import { NgForm } from '@angular/forms';
+import { AuthenticationService } from 'src/app/service/basic-authentication.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -19,7 +19,6 @@ import { NgForm } from '@angular/forms';
 export class PostDetailComponent implements OnInit {
   post = new Post()
   postId = null
-  userId = null
   comments: Comment[]
   userComment = new CommentCreate()
   loading = false
@@ -27,12 +26,11 @@ export class PostDetailComponent implements OnInit {
   error = ''
 
   constructor(private activatedRoute:ActivatedRoute,
-    private simpleAuthenticationService: SimpleAuthenticationService,
+    private authenticationService: AuthenticationService,
     private postDataService: PostService, private commentService: CommentService, 
     private alertService: AlertService,
     private router: Router) { 
     this.postId = this.activatedRoute.snapshot.params['postId'];
-    this.userId = this.activatedRoute.snapshot.params['userId'];
   }
 
   ngOnInit() {
@@ -41,6 +39,7 @@ export class PostDetailComponent implements OnInit {
   }
 
   loadPost() {
+    console.log(`Execute GET post for postId=${this.postId}`)
     this.postDataService.executeGetPost(this.postId).subscribe(
       response => this.handleSuccessfulResponse(response),
       error => this.handleErrorResponse(error)
@@ -64,12 +63,10 @@ export class PostDetailComponent implements OnInit {
   }
 
   loadComments() {
-    
     this.commentService.executeGetCommentsForPost(this.postId).subscribe(
       response => this.handleSuccessfulLoadCommentsResponse(response),
       error => this.handleErrorLoadCommentsResponse(error)
     )
-
   }
 
   handleErrorLoadCommentsResponse(response: any): void {
@@ -90,15 +87,6 @@ export class PostDetailComponent implements OnInit {
       this.comments = response._embedded.data
     console.log('COMMENTS ', this.comments)
   }
-
-
-  // saveComment() {
-  //   console.log(`Saving comment ${this.userComment}`)
-
-  //   this.userComment = new Comment()
-  //   this.userComment.content = 'New Comment' // clear comment to accommodate new ones
-  // }
-
 
   saveComment(createCommentForm: NgForm) {
     console.log("Saving comment ", this.userComment)
@@ -127,12 +115,10 @@ export class PostDetailComponent implements OnInit {
     
   }
 
-  
-
   assignForeignKeysToComment() {
     let post = new Post();
     post.id = this.post.id
-    let commentor = this.simpleAuthenticationService.getLoggedInUser()
+    let commentor = this.authenticationService.getLoggedInUser()
     this.userComment.post = post;
     this.userComment.commentor = commentor;
   }

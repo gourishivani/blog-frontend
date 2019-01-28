@@ -3,7 +3,7 @@ import { Post } from '../../models/post';
 import { Router } from '@angular/router';
 import { PostService } from '../../service/data/post.service';
 import { PostCreate } from '../../models/post-create';
-import { SimpleAuthenticationService } from '../../service/simple-authentication.service';
+import { AuthenticationService } from 'src/app/service/basic-authentication.service';
 
 @Component({
   selector: 'app-post-save',
@@ -18,7 +18,7 @@ export class PostSaveComponent implements OnInit {
     private postService: PostService,
     // private route: ActivatedRoute,
     private router: Router,
-    private simpleAuthenticationService: SimpleAuthenticationService) { }
+    private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.post = new PostCreate()
@@ -27,7 +27,7 @@ export class PostSaveComponent implements OnInit {
 
   savePost() {
     console.log("Saving post ", this.post)
-    this.post.authorId = this.simpleAuthenticationService.getLoggedInUser().id;
+    this.post.authorId = this.authenticationService.getLoggedInUser().id;
     this.postService.executeCreatePost(this.post)
           .subscribe (
             data => {

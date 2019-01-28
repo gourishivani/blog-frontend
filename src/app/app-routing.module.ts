@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'home', redirectTo: '/users'},
   { path: 'users', component: UserListComponent},
   { path: 'users/:id/posts', component: PostListComponent},
-  { path: 'users/:userId/posts/:postId', component: PostDetailComponent},
+  { path: 'posts/:postId', component: PostDetailComponent},
 
   // User needs to be logged in for the following routes
   { path: 'createPost', component: PostSaveComponent, canActivate:[RouteGuardService] },

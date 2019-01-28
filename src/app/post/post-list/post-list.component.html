@@ -3,13 +3,8 @@
 <div class="alert alert-success" *ngIf='message'>{{message}}</div>
 
 <div class="container">
-  <h4> Posts by {{user.name}} </h4>
-  <!-- <div class="align-right">
-      <button *ngIf="simpleAuthenticationService.isUserLoggedIn()" (click)="navigateToPostSave()" class="btn btn-success">Add</button>
-  </div> -->
-<!-- <a [routerLink]="[ '/', 'users', user.id, 'posts', post.id, 'save' ]">here</a> -->
+  <h4 *ngIf="!loading && user"> Posts by {{user.name}} </h4>
   <table *ngIf="hasPosts()" class="table">
-  <!-- <table *ngIf="posts !== undefined && posts.length != 0" class="table"> -->
     <thead>
       <tr>
         <th>Post Id</th>
@@ -35,7 +30,7 @@
         <!-- <td><button (click)="navigateToPostDetail(post)" class="btn btn-success">Get Posts</button></td> -->
         
         <td>
-          <a [routerLink]="['/users', user.id, 'posts', post.id]">
+          <a [routerLink]="['/posts', post.id]">
             <span class="badge">Read Post</span>
           </a>
         </td>

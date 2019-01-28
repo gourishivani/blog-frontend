@@ -16,23 +16,15 @@ export class UserDataService {
   constructor(private httpClient: HttpClient, private utils: ApiUtils) { }
  
   executeGetAllUsers() {
-    console.log("UserDataService ", this.httpClient.get(GET_ALL_USERS))
-
-    return this.httpClient.get<EmbeddedServerData>(GET_ALL_USERS
-      // {headers}
-      )
+    return this.httpClient.get<EmbeddedServerData>(GET_ALL_USERS)
   }
 
   executeGetUser(userId: number) {
+    console.log(`Will try to load userId=${userId} from URL ${this.utils.getUserUrl(userId)}`)
     return this.httpClient.get<UserDetail>(this.utils.getUserUrl(userId))
   }
 
   executeCreateUser(userCreate: UserCreate) {
     return this.httpClient.post(CREATE_USER,userCreate)
   }
-
-  // executeHelloWorldBeanServiceWithPath(name: String) {
-  //   return this.httpClient.get<HelloWorldBean>(`http://localhost:8080/hello-world-bean/path-variable/${name}`)
-  // }
-
 }

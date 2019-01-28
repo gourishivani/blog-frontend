@@ -32,6 +32,8 @@ export class PostService {
   }
 
   executeGetPost(postId: number) {
+    console.log("PostService executeGetPost", postId)
+    console.log("PostService executeGetPostURL=", this.apiEndPoint.getPostUrl(postId))
     return this.httpClient.get<Post>(this.apiEndPoint.getPostUrl(postId))
   }
 }

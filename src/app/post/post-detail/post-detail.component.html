@@ -13,15 +13,15 @@
         <form (ngSubmit)="!postForm.invalid && saveComment(postForm); postForm.reset()" #postForm="ngForm">
             <div class="form-group">
                 <!-- <label for="commentContent">Comment</label> -->
-                <textarea  #comment="ngModel" [(ngModel)]="userComment.content" [disabled]="!simpleAuthenticationService.isUserLoggedIn()"
+                <textarea  #comment="ngModel" [(ngModel)]="userComment.content" [disabled]="!authenticationService.isUserLoggedIn()"
                  class="form-control"
                  name="userComment" required="required"
                  minlength="2" maxlength="300" 
                  placeholder="Write a comment..." rows="3"></textarea>
             </div>
             
-            <button *ngIf="simpleAuthenticationService.isUserLoggedIn()" [disabled]="postForm.invalid" type="submit" class="btn btn-primary">Add Comment</button>
-            <p *ngIf="!simpleAuthenticationService.isUserLoggedIn()">Log In If you want to comment</p>
+            <button *ngIf="authenticationService.isUserLoggedIn()" [disabled]="postForm.invalid" type="submit" class="btn btn-primary">Add Comment</button>
+            <p *ngIf="!authenticationService.isUserLoggedIn()">Log In If you want to comment</p>
           </form>
     </div>
 </div>

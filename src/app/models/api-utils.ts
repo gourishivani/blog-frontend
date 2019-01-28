@@ -11,7 +11,7 @@ export class ApiUtils {
     }
   
     getPostUrl(postId: number) {
-      return `${BASE}/posts/${postId}`;
+      return `${BASE}posts/${postId}`;
     }
   
     getAllCommentsUrl(postId: number): string {

@@ -5,15 +5,15 @@
 
       <ul class="navbar-nav">
           <li><a routerLink="/users" routerLinkActive="active" class="nav-link">Home</a></li>
-          <li><a *ngIf="simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/createPost" class="nav-link">Create Post</a></li>
-          <li><a *ngIf="simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/posts" class="nav-link">My Posts</a></li>
-          <li><a *ngIf="simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/account" class="nav-link">My Account</a></li>
+          <li><a *ngIf="authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/createPost" class="nav-link">Create Post</a></li>
+          <!-- <li><a *ngIf="authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/posts" class="nav-link">Posts</a></li> -->
+          <li><a *ngIf="authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/account" class="nav-link">My Account</a></li>
       </ul>
 
       <ul class="navbar-nav navbar-collapse justify-content-end">
-              <li><a *ngIf="!simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/login" class="nav-link">Login</a></li>
-              <li><a *ngIf="!simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/register" class="nav-link">RegisterUser</a></li>
-              <li><a *ngIf="simpleAuthenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/logout" class="nav-link">Logout</a></li>
+              <li><a *ngIf="!authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/login" class="nav-link">Login</a></li>
+              <li><a *ngIf="!authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/register" class="nav-link">RegisterUser</a></li>
+              <li><a *ngIf="authenticationService.isUserLoggedIn()" routerLinkActive="active" routerLink="/logout" class="nav-link">Logout</a></li>
       </ul>
   </nav>
 </header>
