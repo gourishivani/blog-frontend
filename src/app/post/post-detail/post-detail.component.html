@@ -2,7 +2,9 @@
     <h4 class="display-10">{{post.title}}</h4>
     <p class="lead">{{post.description}}</p>
 </div>
-
+<div *ngIf="hasError">
+    <p>{{getErrorMessage()}}</p>
+</div>
 <div class="card">
     <div class="card-header">
         Comments

@@ -3,13 +3,14 @@ import { Post } from '../../models/post';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from '../../models/comment';
 import { PostService } from '../../service/data/post.service';
-import { AlertService } from '../../service/alert.service';
 import { UserDataService } from '../../service/data/user.service';
 import { CommentService, EmbeddedCommentData } from '../../service/data/comment.service';
 import { CommentCreate } from '../../models/comment-create';
 import { User } from '../../user/user-list/user-list.component';
 import { NgForm } from '@angular/forms';
 import { AuthenticationService } from 'src/app/service/basic-authentication.service';
+import { ConfigErrorService } from 'src/app/service/config-error.service';
+import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState } from 'src/app/models/api-state';
 
 @Component({
   selector: 'app-post-detail',
@@ -20,15 +21,16 @@ export class PostDetailComponent implements OnInit {
   post = new Post()
   postId = null
   comments: Comment[]
+  commentState = new DefaultApiCallState();
   userComment = new CommentCreate()
-  loading = false
-  errorMessageFromService = ""
-  error = ''
+  // loading = false
+  // errorMessageFromService = ""
+  // error = ''
 
   constructor(private activatedRoute:ActivatedRoute,
     private authenticationService: AuthenticationService,
     private postDataService: PostService, private commentService: CommentService, 
-    private alertService: AlertService,
+    private configErrorService: ConfigErrorService,
     private router: Router) { 
     this.postId = this.activatedRoute.snapshot.params['postId'];
   }
@@ -39,6 +41,7 @@ export class PostDetailComponent implements OnInit {
   }
 
   loadPost() {
+    this.post.state = new LoadingApiCallState();
     console.log(`Execute GET post for postId=${this.postId}`)
     this.postDataService.executeGetPost(this.postId).subscribe(
       response => this.handleSuccessfulResponse(response),
@@ -47,22 +50,19 @@ export class PostDetailComponent implements OnInit {
   }
 
   handleErrorResponse(response: any): void {
-    this.loading = false
     console.log(response)
-    console.log(response.message)
-    console.log(response.error.message)
-    this.errorMessageFromService = response.error.message
-    // this.alertService.error = error;
+    this.post.state = this.configErrorService.handleError(response)
   }
 
   handleSuccessfulResponse(response: Post): void {
-    this.loading = false
     console.log('Success ', response)
     this.post = response
+    this.post.state = new SuccessApiCallState("Successfully logged in");
     console.log('POST ', this.post)
   }
 
   loadComments() {
+    this.commentState = new LoadingApiCallState();
     this.commentService.executeGetCommentsForPost(this.postId).subscribe(
       response => this.handleSuccessfulLoadCommentsResponse(response),
       error => this.handleErrorLoadCommentsResponse(error)
@@ -70,16 +70,12 @@ export class PostDetailComponent implements OnInit {
   }
 
   handleErrorLoadCommentsResponse(response: any): void {
-    this.loading = false
+    this.commentState = this.configErrorService.handleError(response)
     console.log(response)
-    console.log(response.message)
-    console.log(response.error.message)
-    this.errorMessageFromService = response.error.message
-    // this.alertService.error = error;
   }
 
   handleSuccessfulLoadCommentsResponse(response: EmbeddedCommentData): void {
-    this.loading = false
+    this.commentState = new SuccessApiCallState("Successfully logged in");
     console.log('Success ', response)
     if (!response._embedded) {
       this.comments = []  
@@ -91,6 +87,7 @@ export class PostDetailComponent implements OnInit {
   saveComment(createCommentForm: NgForm) {
     console.log("Saving comment ", this.userComment)
     this.assignForeignKeysToComment()
+    this.userComment.state =  new LoadingApiCallState();
     this.commentService.executeCreateComment(this.userComment)
           .subscribe (
             data => {
@@ -105,14 +102,21 @@ export class PostDetailComponent implements OnInit {
               this.loadComments()
             },
             response => {
+              this.userComment.state = this.configErrorService.handleError(response)
               console.log('ERROR ', response)
-              if (response.error && response.error.errorCode == 'VALIDATION_FAILED') {
-                this.error = response.error.message
-              } else
-                this.error = 'Unexpected error when registering a user.'
             }
           )
-    
+  }
+
+
+  hasError() {
+    return this.commentState.error || this.userComment.state.error || this.post.state.error
+  }
+
+  getErrorMessage() {
+    if (this.commentState.error) return this.commentState.error
+    if (this.userComment.state.error) return this.userComment.state.error
+    if (this.post.state.error) return this.post.state.error
   }
 
   assignForeignKeysToComment() {

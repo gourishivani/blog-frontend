@@ -6,7 +6,7 @@
   <div class="alert alert-warning" *ngIf="(password.dirty && password.touched) && password.invalid">Password is required</div>
   <div class="alert alert-warning" *ngIf="(email.dirty && email.touched) && email.invalid">Please enter a valid email</div>
   <div class="alert alert-warning" *ngIf="(spaceName.dirty && spaceName.touched) && spaceName.invalid">SpaceName is required and should be between 2 to 30 characters</div>
-  <div class="alert alert-warning" *ngIf="error">{{error}}</div>
+  <div class="alert alert-warning" *ngIf="hasError()">{{user.state.error}}</div>
   
   <form (ngSubmit)="!userForm.invalid && registerUser()" #userForm="ngForm">
     <fieldset class="form-group">

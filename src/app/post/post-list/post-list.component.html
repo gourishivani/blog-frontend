@@ -3,7 +3,7 @@
 <div class="alert alert-success" *ngIf='message'>{{message}}</div>
 
 <div class="container">
-  <h4 *ngIf="!loading && user"> Posts by {{user.name}} </h4>
+  <h4 *ngIf="!user.state.loading && user"> Posts by {{user.name}} </h4>
   <table *ngIf="hasPosts()" class="table">
     <thead>
       <tr>
@@ -40,9 +40,9 @@
 
   </table>
 
-  <span [hidden]="!loading">Loading...</span>
+  <span [hidden]="!isLoading()">Loading...</span>
 
-  <p *ngIf="!loading && !hasPosts()">This user has no posts</p>
+  <p *ngIf="!isLoading() && !hasPosts()">This user has no posts</p>
 
   <!-- <div class="row">
     <button (click)="addTodo()" class="btn btn-success">Add</button>

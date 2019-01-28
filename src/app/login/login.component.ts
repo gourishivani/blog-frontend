@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertService } from '../service/alert.service';
 import { AuthenticationService } from '../service/basic-authentication.service';
+import { ConfigErrorService } from '../service/config-error.service';
+import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState, ErrorApiCallState } from '../models/api-state';
 
 @Component({
   selector: 'app-login',
@@ -15,32 +16,34 @@ export class LoginComponent implements OnInit {
   userid = 1
   password = 'test123'
   
-  errorMessage = 'Invalid Credentials'
-  invalidLogin = false
-  loading = false;
+  state = new DefaultApiCallState();
 
   constructor(private router: Router,
     private basicAuthenticationService: AuthenticationService,
-    private alertService: AlertService
-    // ,private basicAuthenticationService: BasicAuthenticationService
+    private configErrorService: ConfigErrorService
     ) { }
 
   ngOnInit() {
   }
 
   handleJWTAuthLogin() {
+    this.state = new LoadingApiCallState();
     this.basicAuthenticationService.executeJWTAuthenticationService(this.username, this.password)
         .subscribe(
           data => {
             console.log(data)
             this.router.navigate(['users', this.userid, 'posts'])
-            this.invalidLogin = false      
+            this.state = new SuccessApiCallState("Successfully logged in");
           },
           error => {
+            this.state = this.configErrorService.handleError(error)
             console.log(error)
-            this.invalidLogin = true
           }
         )
+  }
+
+  hasError() {
+    return this.state instanceof ErrorApiCallState || this.state.error
   }
 
 }

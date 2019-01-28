@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDataService as UserDataService } from '../../service/data/user.service';
-import { AlertService } from '../../service/alert.service';
 import { UserDetail as UserDetail } from '../../models/user-detail-dto';
+import { ConfigErrorService } from 'src/app/service/config-error.service';
+import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState } from 'src/app/models/api-state';
 
 export class User {
   public id:number;
@@ -28,17 +29,16 @@ export interface Embedded {
 export class UserListComponent implements OnInit {
 
   users: UserDetail []
-  errorMessageFromService = ""
-  // users = []
-  loading = true
-
-  constructor(private router: Router, private userDataService: UserDataService, private alertService: AlertService) { }
+  state = new DefaultApiCallState();
+  
+  constructor(private router: Router, private userDataService: UserDataService, private configErrorService: ConfigErrorService) { }
 
   ngOnInit() {
     this.loadAllUsers()
   }
 
   loadAllUsers() {
+    this.state = new LoadingApiCallState();
     this.userDataService.executeGetAllUsers().subscribe(
       response => this.handleSuccessfulResponse(response),
       error => this.handleErrorResponse(error)
@@ -46,23 +46,18 @@ export class UserListComponent implements OnInit {
   }
 
   handleErrorResponse(response: any): void {
-    this.loading = false
+    this.state = this.configErrorService.handleError(response)
     console.log(response)
-    console.log(response.message)
-    console.log(response.error.message)
-    this.errorMessageFromService = response.error.message
-    // this.alertService.error = error;
   }
 
   handleSuccessfulResponse(response: EmbeddedServerData): void {
-    this.loading = false
     console.log('Success ', response)
     // response.map(res => res)
     if (!response._embedded) {
       this.users = []  
     } else
       this.users = response._embedded.data
-
+    this.state = new SuccessApiCallState("Successfully logged in");
     
     console.log('USERS ', this.users)
   }

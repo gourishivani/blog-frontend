@@ -3,6 +3,8 @@ import { User } from '../user-list/user-list.component';
 import { Router } from '@angular/router';
 import { UserDataService } from '../../service/data/user.service';
 import { UserCreate } from '../../models/user-create';
+import { ErrorApiCallState, LoadingApiCallState } from 'src/app/models/api-state';
+import { ConfigErrorService } from 'src/app/service/config-error.service';
 
 @Component({
   selector: 'app-register-user',
@@ -12,14 +14,14 @@ import { UserCreate } from '../../models/user-create';
 export class RegisterUserComponent implements OnInit {
 
   user = new UserCreate();
-  error = ""
-  constructor(private router: Router, private userService: UserDataService) { }
+  constructor(private router: Router, private userService: UserDataService, private configError: ConfigErrorService) { }
 
   ngOnInit() {
   }
 
   registerUser() {
     console.log(`Registering User ${this.user}`)
+    this.user.state = new LoadingApiCallState()
     this.userService.executeCreateUser(this.user)
           .subscribe (
             data => {
@@ -28,13 +30,14 @@ export class RegisterUserComponent implements OnInit {
             },
             response => {
               console.log('ERROR ', response)
-              if (response.error && response.error.errorCode == 'VALIDATION_FAILED') {
-                this.error = response.error.message
-              } else
-                this.error = 'Unexpected error when registering a user.'
+              this.user.state = this.configError.handleError(response)
+              console.log('userstate ', this.user)
             }
           )
-    
+  }
+
+  hasError() {
+    return this.user.state instanceof ErrorApiCallState && this.user.state.error
   }
   
 }

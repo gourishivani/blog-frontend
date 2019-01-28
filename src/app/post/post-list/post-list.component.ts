@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../../models/post';
-import { User } from '../../user/user-list/user-list.component';
 import { PostService, PostsEmbeddedData } from '../../service/data/post.service';
-import { AlertService } from '../../service/alert.service';
 import { UserDataService } from 'src/app/service/data/user.service';
 import { UserDetail } from 'src/app/models/user-detail-dto';
 import { AuthenticationService } from 'src/app/service/basic-authentication.service';
+import { LoadingApiCallState, SuccessApiCallState, DefaultApiCallState, ErrorApiCallState } from 'src/app/models/api-state';
+import { ConfigErrorService } from 'src/app/service/config-error.service';
 
 export interface EmbeddedServerData {
   _embedded:Embedded
@@ -24,17 +24,16 @@ export interface Embedded {
 export class PostListComponent implements OnInit {
 
   userId = null
-  user = null
+  user = new UserDetail()
   posts: Post[]
-  loading = false
-  errorMessageFromService = ""
+  state = new DefaultApiCallState();
 
   constructor(
     private activatedRoute: ActivatedRoute, private route: Router,
     private authenticationService: AuthenticationService,
     private postDataService: PostService, 
-    private userDataService: UserDataService, 
-    private alertService: AlertService) {
+    private userDataService: UserDataService,
+    private configErrorService: ConfigErrorService) {
   }
 
   ngOnInit() {
@@ -43,17 +42,6 @@ export class PostListComponent implements OnInit {
     // this.user = this.getUser()
     this.loadPostsForUser()
   }
-
-
-  // getUser() {
-  //   let user = new User()
-  //   user.created = new Date()
-  //   user.id = this.userId
-  //   user.name = "Bert"
-  //   user.spaceName = "Bates Motel"
-
-  //   return user
-  // }
 
   navigateToPostDetail(postId:number) {
     console.log(`this.user.id=${this.user.id}`)
@@ -66,7 +54,7 @@ export class PostListComponent implements OnInit {
   }
 
   loadUser() {
-    this.loading = true;
+    this.user.state = new LoadingApiCallState();
     this.userDataService.executeGetUser(this.userId).subscribe(
       response => this.handleLoadUserSuccessfulResponse(response),
       error => this.handleLoadUserErrorResponse(error)
@@ -74,23 +62,18 @@ export class PostListComponent implements OnInit {
   }
 
   handleLoadUserErrorResponse(response: any): void {
-    this.loading = false
-    console.log('Error loading user', response)
     console.log(response.message)
-    console.log(response.error.message)
-    this.errorMessageFromService = response.error.message
-    // this.alertService.error = error;
+    this.user.state = this.configErrorService.handleError(response)
   }
 
   handleLoadUserSuccessfulResponse(response: UserDetail): void {
-    this.loading = false
     this.user = response
     console.log('User ', this.user)
+    this.user.state = new SuccessApiCallState("Successfully loaded user");
   }
 
-
   loadPostsForUser() {
-    this.loading = true;
+    this.state = new LoadingApiCallState();
     this.postDataService.executeGetPostsForUser(this.userId).subscribe(
       response => this.handleSuccessfulResponse(response),
       error => this.handleErrorResponse(error)
@@ -98,16 +81,12 @@ export class PostListComponent implements OnInit {
   }
 
   handleErrorResponse(response: any): void {
-    this.loading = false
     console.log(response)
-    console.log(response.message)
-    console.log(response.error.message)
-    this.errorMessageFromService = response.error.message
-    // this.alertService.error = error;
+    this.state = this.configErrorService.handleError(response)
   }
 
   handleSuccessfulResponse(response: PostsEmbeddedData): void {
-    this.loading = false
+    this.state = new SuccessApiCallState("Successfully logged in");
     console.log('Success ', response)
     if (!response._embedded) {
       this.posts = []  
@@ -119,5 +98,13 @@ export class PostListComponent implements OnInit {
   hasPosts() {
     // console.log('has posts ', this.posts && this.posts.length > 0)
     return this.posts && this.posts.length > 0
+  }
+
+  isLoading() {
+    return this.state.loading
+  }
+
+  hasError() {
+    return this.state instanceof ErrorApiCallState || this.state.error
   }
 }

@@ -22,9 +22,9 @@
   </table>
 
   <!-- TODO, this could use a bootstrap spinner-->
-  <span [hidden]="!loading">Loading...</span>
+  <span [hidden]="!state.loading">Loading...</span>
 
-  <p *ngIf="!loading && !users">There is no user space to explore</p>
+  <p *ngIf="!state.loading && !users">There is no user space to explore</p>
   <!-- <div class="row">
     <button (click)="addTodo()" class="btn btn-success">Add</button>
   </div> -->

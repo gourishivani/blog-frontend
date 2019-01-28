@@ -1,3 +1,5 @@
+import { ApiCallState, DefaultApiCallState } from './api-state';
+
 export class UserDetail {
     public id:number;
     public email:string;
@@ -5,5 +7,8 @@ export class UserDetail {
     public spaceName:string;
     public created: Date;
     
-    constructor() { }
+    public state: ApiCallState;
+    constructor() {
+        this.state = new DefaultApiCallState()
+     }
 }
