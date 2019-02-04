@@ -1,6 +1,6 @@
-import { User } from '../user/user-list/user-list.component';
 import { Post } from './post';
 import { ApiCallState, DefaultApiCallState } from './api-state';
+import { User } from './User';
 
 export class CommentCreate {
     content: string;

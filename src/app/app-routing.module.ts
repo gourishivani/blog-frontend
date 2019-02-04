@@ -10,6 +10,7 @@ import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { PostSaveComponent } from './post/post-save/post-save.component';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
 import { UnauthenticatedUserRouteGuardService } from './service/unauthenticated-user-route-guard.service';
+import { UserDetailComponent } from './user/detail/user-detail.component';
 
 const routes: Routes = [
   // Allow anonymous users to access the following routes
@@ -24,11 +25,10 @@ const routes: Routes = [
   // User needs to be logged in for the following routes
   { path: 'createPost', component: PostSaveComponent, canActivate:[RouteGuardService] },
   { path: 'myposts', redirectTo: '/users/:userId/posts/:postId', canActivate:[RouteGuardService] },
-  { path: 'myaccount', redirectTo: '/users/:id', canActivate:[RouteGuardService] },
+  { path: 'myaccount', component: UserDetailComponent, canActivate:[RouteGuardService] },
   { path: 'logout', component: LogoutComponent, canActivate:[RouteGuardService] },
   
   // { path: 'users/:id/posts/:id/comments', component: CommentsComponent, canActivate:[RouteGuardService] },
-  // { path: 'users/:id/posts', component: TodoComponent, canActivate:[RouteGuardService] },
   // <a [routerLink]="['/users', user.id, 'posts', post.id]">
   { path: '**', component: ErrorComponent }
 ];

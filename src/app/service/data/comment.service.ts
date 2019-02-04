@@ -5,14 +5,6 @@ import { Comment } from 'src/app/models/comment';
 import { ApiUtils } from 'src/app/models/api-utils';
 import { CREATE_COMMENT } from 'src/app/app.constants';
 
-export interface EmbeddedCommentData {
-  _embedded:EmbeddedComment
-}
-export interface EmbeddedComment {
-  data:Comment[]
-}
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +14,7 @@ export class CommentService {
  
   executeGetCommentsForPost(postId: number) {
     console.log("PostService ", postId)
-    return this.httpClient.get<EmbeddedCommentData>(this.apiEndPoint.getAllCommentsUrl(postId))
+    return this.httpClient.get<Comment[]>(this.apiEndPoint.getAllCommentsUrl(postId))
   }
 
   executeCreateComment(comment: CommentCreate): any {

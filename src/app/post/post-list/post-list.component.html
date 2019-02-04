@@ -12,6 +12,7 @@
         <th>Post Description</th>
         <th>Created On</th>
         <th>Modified On</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +29,6 @@
         <td>{{post.created| date:"MM/dd/yy hh:mm a"}}</td>
         <td>{{post.lastModified| date:"MM/dd/yy hh:mm a"}}</td>
         <!-- <td><button (click)="navigateToPostDetail(post)" class="btn btn-success">Get Posts</button></td> -->
-        
         <td>
           <a [routerLink]="['/posts', post.id]">
             <span class="badge">Read Post</span>
@@ -43,9 +43,4 @@
   <span [hidden]="!isLoading()">Loading...</span>
 
   <p *ngIf="!isLoading() && !hasPosts()">This user has no posts</p>
-
-  <!-- <div class="row">
-    <button (click)="addTodo()" class="btn btn-success">Add</button>
-  </div> -->
-
 </div>

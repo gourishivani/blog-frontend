@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators'
 import { __values } from 'tslib';
 import { UserCreate } from 'src/app/models/user-create';
-import { EmbeddedServerData } from 'src/app/user/user-list/user-list.component';
-import { UserDetail } from 'src/app/models/user-detail-dto';
+import { UserDetail } from 'src/app/models/user-detail';
 import { GET_ALL_USERS, CREATE_USER } from 'src/app/app.constants';
 import { ApiUtils } from 'src/app/models/api-utils';
 
@@ -16,7 +14,7 @@ export class UserDataService {
   constructor(private httpClient: HttpClient, private utils: ApiUtils) { }
  
   executeGetAllUsers() {
-    return this.httpClient.get<EmbeddedServerData>(GET_ALL_USERS)
+    return this.httpClient.get<UserDetail[]>(GET_ALL_USERS)
   }
 
   executeGetUser(userId: number) {

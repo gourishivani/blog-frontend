@@ -3,7 +3,7 @@ import { Post } from '../../models/post';
 import { Router } from '@angular/router';
 import { PostService } from '../../service/data/post.service';
 import { PostCreate } from '../../models/post-create';
-import { AuthenticationService } from 'src/app/service/basic-authentication.service';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-post-save',

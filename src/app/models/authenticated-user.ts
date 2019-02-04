@@ -1,4 +1,4 @@
-import { UserDetail } from './user-detail-dto';
+import { UserDetail } from './user-detail';
 
 export class AuthenticatedUser {
     token: string

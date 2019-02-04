@@ -3,18 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../../models/post';
 import { PostService, PostsEmbeddedData } from '../../service/data/post.service';
 import { UserDataService } from 'src/app/service/data/user.service';
-import { UserDetail } from 'src/app/models/user-detail-dto';
-import { AuthenticationService } from 'src/app/service/basic-authentication.service';
+import { UserDetail } from 'src/app/models/user-detail';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { LoadingApiCallState, SuccessApiCallState, DefaultApiCallState, ErrorApiCallState } from 'src/app/models/api-state';
 import { ConfigErrorService } from 'src/app/service/config-error.service';
-
-export interface EmbeddedServerData {
-  _embedded:Embedded
-}
-export interface Embedded {
-  data:Post[]
-}
-
 
 @Component({
   selector: 'app-post-list',
@@ -85,13 +77,10 @@ export class PostListComponent implements OnInit {
     this.state = this.configErrorService.handleError(response)
   }
 
-  handleSuccessfulResponse(response: PostsEmbeddedData): void {
-    this.state = new SuccessApiCallState("Successfully logged in");
+  handleSuccessfulResponse(response: Post[]): void {
+    this.state = new SuccessApiCallState("Successfully loaded posts");
     console.log('Success ', response)
-    if (!response._embedded) {
-      this.posts = []  
-    } else
-      this.posts = response._embedded.data
+    this.posts = response  
     console.log('POSTS ', this.posts)
   }
 

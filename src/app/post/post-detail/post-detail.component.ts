@@ -4,13 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from '../../models/comment';
 import { PostService } from '../../service/data/post.service';
 import { UserDataService } from '../../service/data/user.service';
-import { CommentService, EmbeddedCommentData } from '../../service/data/comment.service';
 import { CommentCreate } from '../../models/comment-create';
-import { User } from '../../user/user-list/user-list.component';
 import { NgForm } from '@angular/forms';
-import { AuthenticationService } from 'src/app/service/basic-authentication.service';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { ConfigErrorService } from 'src/app/service/config-error.service';
 import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState } from 'src/app/models/api-state';
+import { CommentService } from 'src/app/service/data/comment.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -74,13 +73,9 @@ export class PostDetailComponent implements OnInit {
     console.log(response)
   }
 
-  handleSuccessfulLoadCommentsResponse(response: EmbeddedCommentData): void {
-    this.commentState = new SuccessApiCallState("Successfully logged in");
-    console.log('Success ', response)
-    if (!response._embedded) {
-      this.comments = []  
-    } else
-      this.comments = response._embedded.data
+  handleSuccessfulLoadCommentsResponse(response: Comment[]): void {
+    this.commentState = new SuccessApiCallState("Successfully loaded comments for post");
+    this.comments = response  
     console.log('COMMENTS ', this.comments)
   }
 

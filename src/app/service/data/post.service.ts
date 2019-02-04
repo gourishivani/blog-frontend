@@ -25,10 +25,7 @@ export class PostService {
   }
 
   executeGetPostsForUser(userId: number) {
-    console.log("PostService ", this.httpClient.get<PostsEmbeddedData>(this.apiEndPoint.getAllPostsForUsersUrl(userId)))
-    return this.httpClient.get<PostsEmbeddedData>(this.apiEndPoint.getAllPostsForUsersUrl(userId))
-    // console.log("UserDataService ", this.httpClient.get(ApiEndPoint.GET_ALL_USERS))
-    // return this.httpClient.get<EmbeddedServerData>(ApiEndPoint.GET_ALL_USERS)
+    return this.httpClient.get<Post[]>(this.apiEndPoint.getAllPostsForUsersUrl(userId))
   }
 
   executeGetPost(postId: number) {

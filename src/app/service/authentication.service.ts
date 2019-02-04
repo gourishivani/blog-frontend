@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { User } from '../user/user-list/user-list.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASIC_AUTH, BASE } from '../app.constants';
 import { AuthenticationBean } from '../models/authentication-bean';
 import {map} from 'rxjs/operators'
 import { ApiUtils } from '../models/api-utils';
 import { AuthenticatedUser } from '../models/authenticated-user';
-import { UserDetail } from '../models/user-detail-dto';
+import { UserDetail } from '../models/user-detail';
 
 
 export const TOKEN = 'token'
@@ -39,7 +38,6 @@ export class AuthenticationService {
           }
         )
       );
-    //console.log("Execute Hello World Bean Service")
   }
 
  getAuthenticatedUser() {

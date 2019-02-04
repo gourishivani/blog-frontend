@@ -1,0 +1,36 @@
+<div class="container">
+
+  <div class="form-group row">
+    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">User Name</label>
+    <div class="col-sm-10">
+      {{user.name}}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+    <div class="col-sm-10">
+      {{user.email}}
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">spaceName</label>
+    <div class="col-sm-10">
+      {{user.spaceName}}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">created</label>
+    <div class="col-sm-10">
+      {{user.created}}
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Posts </label>
+    <div class="col-sm-10">
+      <td><button (click)="navigateToUserPosts()" class="btn btn-link">Get Posts</button></td>
+    </div>
+  </div>
+
+</div>

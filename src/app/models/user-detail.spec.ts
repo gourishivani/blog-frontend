@@ -1,4 +1,4 @@
-import { UserDetail } from './user-detail-dto';
+import { UserDetail } from './user-detail';
 
 describe('UserDetailDto', () => {
   it('should create an instance', () => {

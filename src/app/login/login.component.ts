@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../service/basic-authentication.service';
+import { AuthenticationService } from '../service/authentication.service';
 import { ConfigErrorService } from '../service/config-error.service';
 import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState, ErrorApiCallState } from '../models/api-state';
 
@@ -19,16 +19,16 @@ export class LoginComponent implements OnInit {
   state = new DefaultApiCallState();
 
   constructor(private router: Router,
-    private basicAuthenticationService: AuthenticationService,
+    private authService: AuthenticationService,
     private configErrorService: ConfigErrorService
     ) { }
 
   ngOnInit() {
   }
 
-  handleJWTAuthLogin() {
+  handlerLogin() {
     this.state = new LoadingApiCallState();
-    this.basicAuthenticationService.executeJWTAuthenticationService(this.username, this.password)
+    this.authService.executeJWTAuthenticationService(this.username, this.password)
         .subscribe(
           data => {
             console.log(data)

@@ -17,8 +17,9 @@ import { PostListComponent } from './post/post-list/post-list.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { PostSaveComponent } from './post/post-save/post-save.component';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
-import { HttpInterceptorBasicAuthService } from './service/http/http-interceptor-basic-auth.service';
+import { HttpInterceptorAuthService } from './service/http/http-interceptor-auth.service';
 import { ApiUtils } from './models/api-utils';
+import { UserDetailComponent } from './user/detail/user-detail.component';
 
 @NgModule({
   // Components, pipes and directives are declared here
@@ -33,7 +34,8 @@ import { ApiUtils } from './models/api-utils';
     PostListComponent,
     PostDetailComponent,
     PostSaveComponent,
-    RegisterUserComponent
+    RegisterUserComponent,
+    UserDetailComponent
   ],
   // Add all the modules here
   imports: [
@@ -44,7 +46,7 @@ import { ApiUtils } from './models/api-utils';
   ],
   providers: [
     ApiUtils,
-    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorBasicAuthService, multi: true}],
+    {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorAuthService, multi: true}],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

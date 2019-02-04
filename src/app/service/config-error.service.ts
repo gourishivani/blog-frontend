@@ -10,19 +10,21 @@ export class ConfigErrorService {
 
   constructor() { }
 
-handleError(error: HttpErrorResponse) {
+handleError(errorResponse: HttpErrorResponse) {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       let message:string
-      if (error.error && (error.error.errorCode == 'VALIDATION_FAILED' || error.status == 409)) {
-        message =  error.error.message
+      if (errorResponse.status == 401)
+        message = "Invalid Credentials"
+      else if (errorResponse.error && (errorResponse.error.errorCode == 'VALIDATION_FAILED' || errorResponse.status == 409)) {
+        message =  errorResponse.error.message
       } else {
         message = 'Unexpected error'
       }
       let state = new ErrorApiCallState(message);
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `Backend returned code ${errorResponse.status}, ` +
+        `body was: ${errorResponse.error}`);
       return state
   };
 }

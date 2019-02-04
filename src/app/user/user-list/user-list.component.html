@@ -3,19 +3,19 @@
 <div class="alert alert-success" *ngIf='message'>{{message}}</div>
 
 <div class="container">
-  <table *ngIf="users" class="table">
+  <table *ngIf="hasUsers()" class="table">
     <thead>
       <tr>
         <th>User Name</th>
         <th>Blog Space Name</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
         <td>{{user.name}}</td>
         <td>{{user.spaceName}}</td>
-        <td><button (click)="getPosts(user.id)" class="btn btn-success">Get Posts</button></td>
-        <!-- <td><button (click)="deleteTodo(todo.id)" class="btn btn-warning">Delete</button></td> -->
+        <td><button (click)="getPosts(user.id)" class="btn btn-link">Get Posts</button></td>
       </tr>
     </tbody>
 
@@ -25,8 +25,5 @@
   <span [hidden]="!state.loading">Loading...</span>
 
   <p *ngIf="!state.loading && !users">There is no user space to explore</p>
-  <!-- <div class="row">
-    <button (click)="addTodo()" class="btn btn-success">Add</button>
-  </div> -->
 
 </div>
