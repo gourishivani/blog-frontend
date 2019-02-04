@@ -53,7 +53,31 @@ End-to-End Tests have not been included due to time constraints
 * console.log needs to be pruned
 
 ## Screenshots
+Anonymous User is able to browse all the Users in the system
 ![Anonymous User - User Listing Page](src/screenshots/1_AnonymousUserListingPage.png?raw=true "Anonymous User - User Listing Page")
+Anonymous User - User Post Listing page
+![Anonymous User - User Post Listing page](src/screenshots/2_AnonymousUser_UserEmptyPostPage.png?raw=true "Anonymous User - User Post Listing page")
+User Post Listing page
+![Anonymous User - User Post Listing page](src/screenshots/3_AnonymousUser_UserPostsPage.png?raw=true "User Post Listing page")
+User Post Detail Page
+![Anonymous User - User Post Detail Page](src/screenshots/4_AnonymousUser_PostDetailPage.png?raw=true "User Post Detail Page")
+User Login Page
+![Anonymous User - User Login Page](src/screenshots/5_AnonymousUser_LoginPage.png?raw=true "Anonymous User - User Login Page")
+Register User Page
+![Anonymous User - Register User Page](src/screenshots/6_RegisterUserPage.png?raw=true "Anonymous User - Register User Page")
+Register User Form Error Page
+![Logged In User - Register User Form Error Page](src/screenshots/7_RegisterUserFormError.png?raw=true "Logged In User - Register User Form Error Page")
+Logged In User - User Listing Page
+![Logged In User - User Listing Page](src/screenshots/9_LoggedInUser_UserListingPage.png?raw=true "Logged In User - User Listing Page")
+Logged In User - Post Create Page
+![Logged In User - Post Create Page](src/screenshots/10_LoggedInUser_PostCreatePage.png?raw=true "Logged In User - Post Create Page")
+Logged In User - Account Details Page
+![Logged In User - Account Details Page](src/screenshots/11_LoggedInUser_AccountDetailsPage.png?raw=true "Logged In User - Account Details Page")
+Logged In User - Post Detail Page
+![Logged In User - Post Detail Page](src/screenshots/12_LoggedInUser_CommentPage.png?raw=true "Logged In User - Post Detail Page")
+Logged In User - Logout Page
+![Logged In User - Logout Page](src/screenshots/13_Logout.png?raw=true "Logged In User - Logout Page")
+
 
 ## References
 * http://jasonwatmore.com/post/2018/11/07/angular-7-reactive-forms-validation-example
