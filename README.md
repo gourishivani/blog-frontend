@@ -1,7 +1,5 @@
 # BlogFrontend
-Front end for Blog Application. 
-
-This application allows users to create and view blogs. The app can be accessed based on Anonymous User and Logged In User:
+This codebase provedes the front end for Blog Application. This application allows users to create and view blogs. The app can be accessed based on Anonymous User and Logged In User:
 
 Anonymous user should be able to:
 1. See a list of all the users and a link to their blog posts
@@ -10,8 +8,8 @@ Anonymous user should be able to:
 4. Login to comment on a post or create a new post in their blog space
 5. Register providing email, username, password and spacename
 
-Logged In User should be able to
-1. Publishes blog post with title and description
+Logged In User should be able to:
+1. Publish blog post with title and description
 2. View their account details and posts created
 Do all the things the anonymous user is able to do.
 
@@ -52,5 +50,13 @@ End-to-End Tests have not been included due to time constraints
 * Data is directly loaded in the components for this prototype. However, this may not be a scalable solution in large real world applications. This also breaks the single responsibility principle. Ideally, the components should only be responsible to know how they can get the data. Resolvers may be used to take the responsibility of fetching the data.  There is also no distinction between a presentational component and Container Component
 * Pagination: There is no support for pagination. The services request for all the data from the backend
 * More issue links can be found here: [Issue-Links](https://github.com/gourishivani/blog-frontend/issues) file.
+* console.log needs to be pruned
 
+
+## References
+* http://jasonwatmore.com/post/2018/11/07/angular-7-reactive-forms-validation-example
+* http://jasonwatmore.com/post/2017/06/25/angular-2-4-alert-toaster-notifications
+* https://medium.com/@dazcyril/resolving-data-in-angular-2-4-and-5-refactoring-components-and-moving-to-ngrx-store-15e15d8be3dd
+* https://blog.angularindepth.com/handle-api-call-state-nicely-445ab37cc9f8
+* Udemy Courses
 
