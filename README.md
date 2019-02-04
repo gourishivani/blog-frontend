@@ -52,6 +52,8 @@ End-to-End Tests have not been included due to time constraints
 * More issue links can be found here: [Issue-Links](https://github.com/gourishivani/blog-frontend/issues) file.
 * console.log needs to be pruned
 
+## Screenshots
+![Anonymous User - User Listing Page](src/screenshots/1_AnonymousUserListingPage.png?raw=true "Anonymous User - User Listing Page")
 
 ## References
 * http://jasonwatmore.com/post/2018/11/07/angular-7-reactive-forms-validation-example
