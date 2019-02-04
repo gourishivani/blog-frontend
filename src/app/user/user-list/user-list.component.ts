@@ -1,25 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDataService as UserDataService } from '../../service/data/user.service';
-import { UserDetail as UserDetail } from '../../models/user-detail-dto';
+import { UserDetail as UserDetail } from '../../models/user-detail';
 import { ConfigErrorService } from 'src/app/service/config-error.service';
 import { DefaultApiCallState, LoadingApiCallState, SuccessApiCallState } from 'src/app/models/api-state';
-
-export class User {
-  public id:number;
-  public name:string;
-  public spaceName:string;
-  public created: Date;
-  
-  constructor() { }
-}
-
-export interface EmbeddedServerData {
-  _embedded:Embedded
-}
-export interface Embedded {
-  data:UserDetail[]
-}
 
 @Component({
   selector: 'app-user-list',
@@ -50,15 +34,10 @@ export class UserListComponent implements OnInit {
     console.log(response)
   }
 
-  handleSuccessfulResponse(response: EmbeddedServerData): void {
+  handleSuccessfulResponse(response: UserDetail[]): void {
     console.log('Success ', response)
-    // response.map(res => res)
-    if (!response._embedded) {
-      this.users = []  
-    } else
-      this.users = response._embedded.data
+    this.users = response  
     this.state = new SuccessApiCallState("Successfully logged in");
-    
     console.log('USERS ', this.users)
   }
 
@@ -66,4 +45,7 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['users', userid, 'posts'])
   }
 
+  hasUsers() {
+    return this.users && this.users.length > 0
+  }
 }
